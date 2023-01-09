@@ -2,8 +2,8 @@
 {
     int a, b;
     string s = "[]-abc";
-    a = 6;
-    b = 8;
+    a = -6;
+    b = 08;
     while (a != b) {
         if (a >= b) {
             a = a - b;

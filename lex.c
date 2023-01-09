@@ -90,6 +90,9 @@ int main(){
         case OR : 
             printf("<or> ");
             break;
+        case ERROR:
+            printf("\nLEXICAL ERROR DETECTED: %s\n", yylval.string);
+            return 1;
         default: ;
     }
     return 0;

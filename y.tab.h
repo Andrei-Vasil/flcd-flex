@@ -17,6 +17,7 @@
 #define TRUE 314
 #define FALSE 315
 #define CONST_STRING 316
+#define ERROR 317
 
 int yylex(void);
 typedef union {

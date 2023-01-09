@@ -12,9 +12,10 @@ DELIM ([ \t:])
 WHITESPACES ({DELIM}+)
 POSI_DECI ([1-9])
 DECI (0|{POSI_DECI})
-DECIMAL (0|{POSI_DECI}{DECI}*)
+DECIMAL (0|{POSI_DECI}{DECI}*|-{POSI_DECI}{DECI}*)
 LETTER ([a-zA-Z_])
 IDENTIFIER ({LETTER}({LETTER}|{DECI})*)
+ERRORS (-0|0{DECIMAL})
 %%
 
 "//" {BEGIN CMNT;} 
@@ -119,5 +120,11 @@ false { return FALSE; }
     yylval.integer = atoi(yytext);
     return NUM;
     }
+
+{ERRORS} {
+    yylval.string=(char*)malloc((yyleng + 1)*(sizeof(char)));
+    strncpy(yylval.string, yytext, yyleng + 1);
+    return ERROR;
+}
 
 %%
