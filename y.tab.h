@@ -7,16 +7,16 @@
 #define NUM 304
 #define INT 305
 #define BOOL 306
-#define CHAR 307
-#define STRING 308
-#define BIN_OP 309
-#define TWO_BIN_OP 310
-#define AND 311
-#define OR 312
-#define READ 313
-#define PRINT 314
-#define TRUE 315
-#define FALSE 316
+#define STRING 307
+#define BIN_OP 308
+#define TWO_BIN_OP 309
+#define AND 310
+#define OR 311
+#define READ 312
+#define PRINT 313
+#define TRUE 314
+#define FALSE 315
+#define CONST_STRING 316
 
 int yylex(void);
 typedef union {

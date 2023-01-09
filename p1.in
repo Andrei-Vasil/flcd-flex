@@ -2,7 +2,7 @@
     int a, b, c;
     a = 1;
     b = 2;
-    c = 3;
+    c = 03;
     if (a > b && a > c) {
         print(a);
     } else {

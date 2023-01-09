@@ -25,12 +25,12 @@ IDENTIFIER ({LETTER}({LETTER}|{DECI})*)
 return (int)'\n';
 }
 
-"\'"."\'" {
-            yylval.string=(char *)malloc((yyleng+1)*(sizeof(char)));
-            strncpy(yylval.string, yytext+1, yyleng-2);
-            yylval.string[yyleng-2]='\0';
-            return CHAR;
-            }
+"\"".*"\"" {
+        yylval.string=(char *)malloc((yyleng)*(sizeof(char)));
+        strncpy(yylval.string, yytext + 1, yyleng - 1);
+        yylval.string[yyleng - 1] = '\0';
+        return CONST_STRING;
+        }
 
 {WHITESPACES} { ; }
 read { return READ; }
@@ -40,7 +40,6 @@ else { return ELSE; }
 while { return WHILE; }
 int { return INT; }
 bool { return BOOL; }
-char { return CHAR; }
 string { return STRING; }
 
 "<=" { 
@@ -111,7 +110,7 @@ true { return TRUE; }
 false { return FALSE; }
 
 {IDENTIFIER} {
-    yylval.string=(char*)malloc((yyleng+1)*(sizeof(char)));
+    yylval.string=(char*)malloc((yyleng + 1)*(sizeof(char)));
     strncpy(yylval.string, yytext, yyleng + 1);
     return ID;
     }

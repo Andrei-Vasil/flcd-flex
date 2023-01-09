@@ -1,6 +1,7 @@
 // p2:
 {
     int a, b;
+    string s = "[]-abc";
     a = 6;
     b = 8;
     while (a != b) {

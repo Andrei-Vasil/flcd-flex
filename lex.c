@@ -59,12 +59,15 @@ int main(){
         case ID : 
             printf("<ID, %s> ", yylval.string);
             free (yylval.string);
-        break;
+            break;
         case NUM : 
             printf("<NUM, %d> ",yylval.integer);
             break;
-        case CHAR : 
-            printf("<CHAR, %s> ", yylval.string);
+        case STRING : 
+            printf("<string> ");
+            break;
+        case CONST_STRING : 
+            printf("<CONST_STRING, %s> ", yylval.string);
             break;
         case BOOL : 
             printf("<bool> ");
