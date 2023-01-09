@@ -1,9 +1,9 @@
 // p2:
 {
-    int a, b;
+    int 1a, b;
     string s = "[]-abc";
     a = -6;
-    b = 08;
+    b = 8;
     while (a != b) {
         if (a >= b) {
             a = a - b;

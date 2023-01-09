@@ -15,7 +15,7 @@ DECI (0|{POSI_DECI})
 DECIMAL (0|{POSI_DECI}{DECI}*|-{POSI_DECI}{DECI}*)
 LETTER ([a-zA-Z_])
 IDENTIFIER ({LETTER}({LETTER}|{DECI})*)
-ERRORS (-0|0{DECIMAL})
+ERRORS (-0|0{DECIMAL}|{DECIMAL}[^0-9]*)
 %%
 
 "//" {BEGIN CMNT;} 
@@ -28,8 +28,8 @@ return (int)'\n';
 
 "\"".*"\"" {
         yylval.string=(char *)malloc((yyleng)*(sizeof(char)));
-        strncpy(yylval.string, yytext + 1, yyleng - 1);
-        yylval.string[yyleng - 1] = '\0';
+        strncpy(yylval.string, yytext + 1, yyleng - 2);
+        yylval.string[yyleng - 2] = '\0';
         return CONST_STRING;
         }
 
