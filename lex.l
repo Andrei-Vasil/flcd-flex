@@ -1,8 +1,8 @@
 %{
 #include <string.h>
 #include <stdlib.h>
-#include "y.tab.h" // tokens are defined
-int line_count = 0; yylType yylval;
+#include "y.tab.h"
+int line_count = 0;
 %}
 
 %option noyywrap
@@ -15,7 +15,7 @@ DECI (0|{POSI_DECI})
 DECIMAL (0|{POSI_DECI}{DECI}*|-{POSI_DECI}{DECI}*)
 LETTER ([a-zA-Z_])
 IDENTIFIER ({LETTER}({LETTER}|{DECI})*)
-ERRORS (-0|0{DECIMAL}|{DECIMAL}[^0-9]*)
+ERRORS (-0|0{DECIMAL}|{DECIMAL}[^0-9\n;]*)
 %%
 
 "//" {BEGIN CMNT;} 
@@ -23,19 +23,17 @@ ERRORS (-0|0{DECIMAL}|{DECIMAL}[^0-9]*)
 <CMNT>\n {++line_count; BEGIN INITIAL;}
 \n {
 ++line_count;
-return (int)'\n';
+printf("newline \n");
 }
 
 "\"".*"\"" {
-        yylval.string=(char *)malloc((yyleng)*(sizeof(char)));
-        strncpy(yylval.string, yytext + 1, yyleng - 2);
-        yylval.string[yyleng - 2] = '\0';
-        return CONST_STRING;
-        }
+    printf("conststring \n");
+    return CONST_STRING;
+}
 
 {WHITESPACES} { ; }
-read { return READ; }
-print { return PRINT; }
+read { printf("read \n"); return READ; }
+print { printf("conststring \n"); return PRINT; }
 if { return IF; }
 else { return ELSE; }
 while { return WHILE; }
@@ -44,61 +42,48 @@ bool { return BOOL; }
 string { return STRING; }
 
 "<=" { 
-    yylval.string=(char *)malloc((yyleng+1)*(sizeof(char)));
-    strncpy(yylval.string, yytext, yyleng + 1);
     return TWO_BIN_OP;
-    }
+}
 
 ">=" { 
-    yylval.string=(char *)malloc((yyleng+1)*(sizeof(char)));
-    strncpy(yylval.string, yytext, yyleng + 1);
     return TWO_BIN_OP;
-    }
+}
 
 "==" { 
-    yylval.string=(char *)malloc((yyleng+1)*(sizeof(char)));
-    strncpy(yylval.string, yytext, yyleng + 1);
     return TWO_BIN_OP;
-    }
+}
 
 "!=" { 
-    yylval.string=(char *)malloc((yyleng+1)*(sizeof(char)));
-    strncpy(yylval.string, yytext, yyleng + 1);
     return TWO_BIN_OP;
-    }
+}
 
-\( { return (int)'('; }
-\) { return (int)')'; }
-\{ { return (int)'{'; }
-\} { return (int)'}'; }
-; { return (int)';'; }
-, { return (int)','; }
-= { return (int)'='; }
-"<" { return (int)'<'; }
-\> { return (int)'>'; }
+\( { return OPEN_ROUND_BRACKET; }
+\) { return CLOSED_ROUND_BRACKET; }
+\{ { return OPEN_CURLY_BRACKET; }
+\} { return CLOSED_CURLY_BRACKET; }
+; { return SEMI_COLON; }
+, { return COMMA; }
+= { return ASSIGN; }
+"<" { return TWO_BIN_OP; }
+\> { return TWO_BIN_OP; }
 
 "%" {
-    yylval.integer = (int)'%';
     return BIN_OP;
     }
 
 "+" {
-    yylval.integer = (int)'+';
     return BIN_OP;
     }
 
 "-" {
-    yylval.integer = (int)'-';
     return BIN_OP;
     }
 
 "*" {
-    yylval.integer = (int)'*';
     return BIN_OP;
     }
 
 "/" {
-    yylval.integer = (int)'/';
     return BIN_OP;
     }
 
@@ -111,20 +96,16 @@ true { return TRUE; }
 false { return FALSE; }
 
 {IDENTIFIER} {
-    yylval.string=(char*)malloc((yyleng + 1)*(sizeof(char)));
-    strncpy(yylval.string, yytext, yyleng + 1);
     return ID;
-    }
+}
 
 {DECIMAL} {
-    yylval.integer = atoi(yytext);
     return NUM;
-    }
+}
 
 {ERRORS} {
-    yylval.string=(char*)malloc((yyleng + 1)*(sizeof(char)));
-    strncpy(yylval.string, yytext, yyleng + 1);
-    return ERROR;
+    printf("lexical error: %s\n", yytext);
+    return -1;
 }
 
 %%
