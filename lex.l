@@ -23,17 +23,15 @@ ERRORS (-0|0{DECIMAL}|{DECIMAL}[^0-9\n;]*)
 <CMNT>\n {++line_count; BEGIN INITIAL;}
 \n {
 ++line_count;
-printf("newline \n");
 }
 
 "\"".*"\"" {
-    printf("conststring \n");
     return CONST_STRING;
 }
 
 {WHITESPACES} { ; }
-read { printf("read \n"); return READ; }
-print { printf("conststring \n"); return PRINT; }
+read { return READ; }
+print { return PRINT; }
 if { return IF; }
 else { return ELSE; }
 while { return WHILE; }
